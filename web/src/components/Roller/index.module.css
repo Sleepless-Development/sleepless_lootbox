@@ -1,0 +1,255 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    padding: 40px;
+    animation: fadeIn var(--transition-normal) forwards;
+}
+
+/* Header */
+.header {
+    text-align: center;
+    animation: slideDown var(--transition-normal) forwards;
+}
+
+.title {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.subtitle {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin: 8px 0 0 0;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* Viewport */
+.viewport {
+    position: relative;
+    width: 80vw;
+    max-width: 900px;
+    height: var(--roller-height);
+    background: var(--bg-primary);
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+}
+
+/* Center Marker */
+.marker {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 3px;
+    height: 100%;
+    background: linear-gradient(180deg, var(--color-legendary) 0%, var(--color-epic) 50%, var(--color-legendary) 100%);
+    z-index: 20;
+    box-shadow: 0 0 20px var(--color-legendary);
+}
+
+.markerGlow {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 100%;
+    background: radial-gradient(ellipse at center, rgba(255, 215, 0, 0.15) 0%, transparent 70%);
+    z-index: 15;
+    pointer-events: none;
+}
+
+/* Edge Fades */
+.fade {
+    position: absolute;
+    top: 0;
+    width: 120px;
+    height: 100%;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.fadeLeft {
+    left: 0;
+    background: linear-gradient(90deg, var(--bg-primary) 0%, transparent 100%);
+}
+
+.fadeRight {
+    right: 0;
+    background: linear-gradient(-90deg, var(--bg-primary) 0%, transparent 100%);
+}
+
+/* Track */
+.track {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: var(--card-gap);
+    padding: 0 20px;
+    transition: transform 0ms linear;
+}
+
+.trackRolling {
+    transition-timing-function: cubic-bezier(0.15, 0.85, 0.3, 1);
+}
+
+/* Items */
+.item {
+    flex-shrink: 0;
+    transition: all var(--transition-fast);
+}
+
+.itemWinner {
+    animation: winnerPop 0.5s ease forwards;
+}
+
+@keyframes winnerPop {
+    0% {
+        transform: scale(1);
+        filter: brightness(1);
+    }
+    50% {
+        transform: scale(1.08);
+        filter: brightness(1.4);
+    }
+    100% {
+        transform: scale(1.05);
+        filter: brightness(1.2);
+    }
+}
+
+/* Sound Wave Animation */
+.soundWave {
+    position: absolute;
+    bottom: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 4px;
+    align-items: flex-end;
+    height: 30px;
+}
+
+.soundWave span {
+    width: 4px;
+    background: var(--color-rare);
+    border-radius: 2px;
+    animation: soundWave 0.5s ease-in-out infinite alternate;
+}
+
+.soundWave span:nth-child(1) {
+    animation-delay: 0s;
+}
+.soundWave span:nth-child(2) {
+    animation-delay: 0.1s;
+}
+.soundWave span:nth-child(3) {
+    animation-delay: 0.2s;
+}
+.soundWave span:nth-child(4) {
+    animation-delay: 0.3s;
+}
+.soundWave span:nth-child(5) {
+    animation-delay: 0.4s;
+}
+
+@keyframes soundWave {
+    0% {
+        height: 10px;
+    }
+    100% {
+        height: 30px;
+    }
+}
+
+/* Progress Bar (optional) */
+.progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--color-common) 0%, var(--color-rare) 50%, var(--color-legendary) 100%);
+    border-radius: 0 0 10px 10px;
+    animation: progressBar 7s linear forwards;
+}
+
+@keyframes progressBar {
+    from {
+        width: 0%;
+    }
+    to {
+        width: 100%;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0%,
+    100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+        gap: 16px;
+    }
+
+    .viewport {
+        width: 95vw;
+        height: 150px;
+    }
+
+    .title {
+        font-size: 22px;
+    }
+
+    .fade {
+        width: 60px;
+    }
+}
+
+@media (max-width: 480px) {
+    .viewport {
+        height: 130px;
+    }
+
+    .title {
+        font-size: 18px;
+    }
+}

@@ -1,0 +1,246 @@
+.card {
+    position: relative;
+    width: var(--card-width);
+    height: var(--card-width);
+    background: var(--bg-card);
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transition: all var(--transition-fast);
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.clickable:hover {
+    transform: translateY(-4px);
+    border-color: var(--border-highlight);
+    box-shadow: var(--shadow-md);
+}
+
+.highlighted {
+    border-width: 3px;
+    box-shadow: 0 0 30px var(--rarity-color, var(--color-legendary));
+    animation: highlightPulse 2s ease-in-out infinite;
+}
+
+@keyframes highlightPulse {
+    0%,
+    100% {
+        box-shadow: 0 0 20px var(--rarity-color, var(--color-legendary));
+    }
+    50% {
+        box-shadow: 0 0 40px var(--rarity-color, var(--color-legendary));
+    }
+}
+
+/* Size Variants */
+.small {
+    width: 80px;
+    height: 80px;
+}
+
+.small .image {
+    width: 50px;
+    height: 50px;
+}
+
+.small .label {
+    font-size: 10px;
+}
+
+.small .rarity {
+    width: 16px;
+    height: 16px;
+    font-size: 10px;
+}
+
+.large {
+    width: 160px;
+    height: 160px;
+}
+
+.large .image {
+    width: 100px;
+    height: 100px;
+}
+
+.large .label {
+    font-size: 14px;
+}
+
+/* Glow Background */
+.glow {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    opacity: 0.8;
+    transition: opacity var(--transition-fast);
+}
+
+.card:hover .glow {
+    opacity: 1;
+}
+
+/* Image Container */
+.imageContainer {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    flex: 1;
+    padding: 8px;
+    z-index: 1;
+}
+
+.image {
+    width: 70px;
+    height: 70px;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+    transition: transform var(--transition-fast);
+}
+
+.card:hover .image {
+    transform: scale(1.1);
+}
+
+/* Info Section */
+.info {
+    position: relative;
+    width: 100%;
+    padding: 8px;
+    text-align: center;
+    z-index: 1;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+.amount {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    padding: 2px 6px;
+    background: rgba(0, 0, 0, 0.75);
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-primary);
+    z-index: 2;
+}
+
+/* Chance Display */
+.chance {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    padding: 2px 6px;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    z-index: 2;
+}
+
+/* Rarity Badge */
+.rarity {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: white;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    z-index: 2;
+}
+
+/* Highlight Effect */
+.highlightEffect {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.1) 50%, transparent 100%);
+    background-size: 200% 200%;
+    animation: shimmer 2s ease infinite;
+    pointer-events: none;
+    z-index: 3;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .card {
+        width: 100px;
+        height: 100px;
+    }
+
+    .image {
+        width: 55px;
+        height: 55px;
+    }
+
+    .label {
+        font-size: 10px;
+    }
+
+    .rarity {
+        width: 18px;
+        height: 18px;
+        font-size: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .card {
+        width: 85px;
+        height: 85px;
+    }
+
+    .image {
+        width: 45px;
+        height: 45px;
+    }
+
+    .label {
+        font-size: 9px;
+    }
+
+    .info {
+        padding: 6px;
+    }
+}

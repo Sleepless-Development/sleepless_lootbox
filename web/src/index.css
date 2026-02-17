@@ -1,0 +1,230 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* Fallback rarity colors - actual colors come from server config */
+    --color-common: #94999a;
+    --color-uncommon: #26c057;
+    --color-rare: #0aa7e6;
+    --color-epic: #d02e9b;
+    --color-legendary: #ffc500;
+
+    --bg-primary: rgba(15, 15, 20, 0.95);
+    --bg-secondary: rgba(25, 25, 35, 0.9);
+    --bg-card: rgba(30, 30, 40, 0.85);
+
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --text-muted: rgba(255, 255, 255, 0.5);
+
+    --border-color: rgba(255, 255, 255, 0.1);
+    --border-highlight: rgba(255, 255, 255, 0.2);
+
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+
+    --transition-fast: 150ms ease;
+    --transition-normal: 250ms ease;
+    --transition-slow: 400ms ease;
+
+    --card-width: 120px;
+    --card-gap: 12px;
+    --roller-height: 180px;
+}
+
+body {
+    font-family: "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    background: transparent;
+    color: var(--text-primary);
+}
+
+#root {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Scrollbar Styles */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+/* Animation Keyframes */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes pulse {
+    0%,
+    100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
+@keyframes glow {
+    0%,
+    100% {
+        filter: brightness(1);
+    }
+    50% {
+        filter: brightness(1.3);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+@keyframes bounce {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Utility Classes */
+.fade-in {
+    animation: fadeIn var(--transition-normal) forwards;
+}
+
+.fade-out {
+    animation: fadeOut var(--transition-normal) forwards;
+}
+
+.slide-up {
+    animation: slideUp var(--transition-normal) forwards;
+}
+
+.slide-down {
+    animation: slideDown var(--transition-normal) forwards;
+}
+
+.scale-in {
+    animation: scaleIn var(--transition-normal) forwards;
+}
+
+/* Rarity Colors */
+.rarity-common {
+    color: var(--color-common);
+}
+.rarity-uncommon {
+    color: var(--color-uncommon);
+}
+.rarity-rare {
+    color: var(--color-rare);
+}
+.rarity-epic {
+    color: var(--color-epic);
+}
+.rarity-legendary {
+    color: var(--color-legendary);
+}
+
+.bg-rarity-common {
+    background-color: var(--color-common);
+}
+.bg-rarity-uncommon {
+    background-color: var(--color-uncommon);
+}
+.bg-rarity-rare {
+    background-color: var(--color-rare);
+}
+.bg-rarity-epic {
+    background-color: var(--color-epic);
+}
+.bg-rarity-legendary {
+    background-color: var(--color-legendary);
+}
