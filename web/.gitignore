@@ -1,0 +1,5 @@
+dist/*
+.env
+.cfg
+node_modules
+.idea
