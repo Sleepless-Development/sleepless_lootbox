@@ -13,7 +13,7 @@ A CS:GO-style lootbox/case opening system for FiveM with weight-based loot pools
 - ⚖️ **Weight-based loot system** - Uses `ox_lib` selector for flexible drop rates
 - 👀 **Preview system** - Players can view case contents and drop chances before opening
 - 🎨 **Rarity system** - Visual rarity tiers (Common, Uncommon, Rare, Epic, Legendary)
-- 🔧 **Framework agnostic** - Supports ESX, QBCore, and Qbox out of the box
+- 🔧 **Framework agnostic** - Supports ESX, QBCore, Qbox, and ox_core out of the box
 - 📦 **Multiple inventory support** - Works with ox_inventory, qb-inventory, and ESX inventory
 - 🎁 **Metadata support** - Items can include custom metadata
 - 📝 **Config + Runtime API** - Define lootboxes in config or register them dynamically via exports
@@ -21,7 +21,7 @@ A CS:GO-style lootbox/case opening system for FiveM with weight-based loot pools
 ## Dependencies
 
 - [ox_lib](https://github.com/communityox/ox_lib) (required)
-- A supported framework (ESX, QBCore, or Qbox)
+- A supported framework (ESX, QBCore, Qbox, or ox_core)
 - A supported inventory system
 
 ## Installation
@@ -186,6 +186,49 @@ When `config.debug = true`:
 | `/lootbox_list` | List all registered lootboxes |
 | `/lootbox_test_ui` | Test the UI with dummy data (client) |
 | `/lootbox_test_preview` | Test the preview UI with dummy data (client) |
+
+## ox_core Setup
+
+When using **ox_core**, usable items are handled through **ox_inventory** item definitions rather than the framework itself. For each lootbox item you want players to be able to use, you need to add a `server.export` entry in your ox_inventory item definitions pointing to this resource:
+
+```lua
+-- ox_inventory/data/items.lua
+["gun_case"] = {
+    label = 'Gun Case',
+    weight = 500,
+    server = {
+        export = "sleepless_lootbox.gun_case"
+    }
+},
+```
+
+The export name must match the format `sleepless_lootbox.<item_name>`, where `<item_name>` is the lootbox name defined in your config or registered via exports. This is handled automatically by the bridge when `config.registerUsableItems` is enabled — you just need to make sure the item definitions include the `server.export`.
+
+> **📄 Reference:** See [`_items.lua`](_items.lua) for a complete set of example ox_inventory item definitions covering all default lootbox cases and their contents. This file is not loaded at runtime — it's purely for reference. Copy the relevant entries into your `ox_inventory/data/items.lua`.
+
+## QBCore / Qbox Setup
+
+When using **QBCore** or **Qbox**, lootbox case items must be defined in your shared items (`qb-core/shared/items.lua`) with `useable = true` so that the framework can register them as usable items:
+
+```lua
+-- qb-core/shared/items.lua
+["gun_case"] = {
+    name = "gun_case",
+    label = "Gun Case",
+    weight = 500,
+    type = "item",
+    image = "gun_case.png",
+    unique = false,
+    useable = true,
+    shouldClose = true,
+    combinable = nil,
+    description = "Contains various firearms",
+},
+```
+
+The `useable = true` flag is what allows `QBCore.Functions.CreateUseableItem` (or `exports.qbx_core:CreateUseableItem` for Qbox) to register the callback. When `config.registerUsableItems` is enabled, the resource handles this automatically — you just need to make sure the item definitions exist with `useable = true`.
+
+> **📄 Reference:** See [`_items.lua`](_items.lua) for a complete set of example qb-core shared item definitions covering all default lootbox cases and their contents. This file is not loaded at runtime — it's purely for reference. Copy the relevant entries into your `qb-core/shared/items.lua`.
 
 ## Documentation
 

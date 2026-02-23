@@ -3,7 +3,7 @@ local config = {}
 -------------------------------------------------
 -- General Settings
 -------------------------------------------------
-config.debug = false
+config.debug = true
 
 -- image file extension
 config.imageExtension = 'webp'
