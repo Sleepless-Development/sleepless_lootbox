@@ -73,9 +73,11 @@ const App: React.FC = () => {
 
     // Handle roll start
     useNuiEvent<RollData>("startRoll", (data) => {
+        // Reset any existing state (e.g., if starting a new roll during winner screen)
+        setWinner(null);
+        setPreviewData(null);
         setRollData(data);
         setViewState("rolling");
-        setWinner(null);
     });
 
     // Handle preview
@@ -164,7 +166,7 @@ const App: React.FC = () => {
                             pool,
                             winnerIndex,
                             caseName: "test_case",
-                            caseLabel: "Test Case"
+                            caseLabel: "Test Case",
                         });
                         setViewState("rolling");
                         setVisible(true);

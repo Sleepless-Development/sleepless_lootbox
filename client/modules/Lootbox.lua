@@ -63,6 +63,10 @@ end
 function LootboxManager.onRollComplete(winner)
     lib.print.debug(('Roll complete - Winner: %s x%d'):format(winner.name, winner.amount))
 
+    -- Clear rolling state when animation completes (entering winner screen)
+    -- This allows the player to start a new roll during the winner screen
+    isRolling = false
+
     TriggerServerEvent('sleepless_lootbox:claimReward')
 end
 
