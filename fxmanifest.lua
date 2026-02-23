@@ -1,7 +1,7 @@
 fx_version 'cerulean'
 game 'gta5'
 
-version '1.0.1'
+version '1.0.2'
 lua54 'yes'
 author 'Sleepless'
 description 'CS:GO style lootbox/case opening system'
