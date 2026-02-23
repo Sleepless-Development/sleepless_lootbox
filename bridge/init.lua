@@ -6,7 +6,9 @@ local function isResourceStarted(resource)
 end
 
 local function loadFramework()
-    if isResourceStarted('qbx_core') then
+    if isResourceStarted('ox_core') then
+        return require(('bridge.framework.ox.%s'):format(context))
+    elseif isResourceStarted('qbx_core') then
         return require(('bridge.framework.qbx.%s'):format(context))
     elseif isResourceStarted('qb-core') then
         return require(('bridge.framework.qb.%s'):format(context))
