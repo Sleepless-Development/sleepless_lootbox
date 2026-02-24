@@ -14,7 +14,7 @@ A CS:GO-style lootbox/case opening system for FiveM with weight-based loot pools
 - 👀 **Preview system** - Players can view case contents and drop chances before opening
 - 🎨 **Rarity system** - Visual rarity tiers (Common, Uncommon, Rare, Epic, Legendary)
 - 🔧 **Framework agnostic** - Supports ESX, QBCore, Qbox, and ox_core out of the box
-- 📦 **Multiple inventory support** - Works with ox_inventory, qb-inventory, and ESX inventory
+- 📦 **Multiple inventory support** - Works with ox_inventory, qb-inventory
 - 🎁 **Metadata support** - Items can include custom metadata
 - 📝 **Config + Runtime API** - Define lootboxes in config or register them dynamically via exports
 
@@ -206,9 +206,9 @@ The export name must match the format `sleepless_lootbox.<item_name>`, where `<i
 
 > **📄 Reference:** See [`_items.lua`](_items.lua) for a complete set of example ox_inventory item definitions covering all default lootbox cases and their contents. This file is not loaded at runtime — it's purely for reference. Copy the relevant entries into your `ox_inventory/data/items.lua`.
 
-## QBCore / Qbox Setup
+## QBCore
 
-When using **QBCore** or **Qbox**, lootbox case items must be defined in your shared items (`qb-core/shared/items.lua`) with `useable = true` so that the framework can register them as usable items:
+When using **QBCore** lootbox case items must be defined in your shared items (`qb-core/shared/items.lua`) with `useable = true` so that the framework can register them as usable items:
 
 ```lua
 -- qb-core/shared/items.lua
@@ -226,7 +226,7 @@ When using **QBCore** or **Qbox**, lootbox case items must be defined in your sh
 },
 ```
 
-The `useable = true` flag is what allows `QBCore.Functions.CreateUseableItem` (or `exports.qbx_core:CreateUseableItem` for Qbox) to register the callback. When `config.registerUsableItems` is enabled, the resource handles this automatically — you just need to make sure the item definitions exist with `useable = true`.
+The `useable = true` flag is what allows `QBCore.Functions.CreateUseableItem` to register the callback. When `config.registerUsableItems` is enabled, the resource handles this automatically — you just need to make sure the item definitions exist with `useable = true`.
 
 > **📄 Reference:** See [`_items.lua`](_items.lua) for a complete set of example qb-core shared item definitions covering all default lootbox cases and their contents. This file is not loaded at runtime — it's purely for reference. Copy the relevant entries into your `qb-core/shared/items.lua`.
 
