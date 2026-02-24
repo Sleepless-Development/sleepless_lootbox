@@ -24,6 +24,8 @@ local ox = {
         description = "Contains various firearms",
         weight = 500,
         stack = true,
+        close = false,
+        consume = 0,
         server = {
             export = "sleepless_lootbox.gun_case",
         },
@@ -31,6 +33,7 @@ local ox = {
             {
                 label = 'Preview Case',
                 action = function(slot)
+                    exports.ox_inventory:closeInventory()
                     exports.sleepless_lootbox:preview('gun_case')
                 end
             },
@@ -42,6 +45,8 @@ local ox = {
         description = "Contains useful supplies and materials",
         weight = 1000,
         stack = true,
+        close = false,
+        consume = 0,
         server = {
             export = "sleepless_lootbox.supply_crate",
         },
@@ -49,6 +54,7 @@ local ox = {
             {
                 label = 'Preview Case',
                 action = function(slot)
+                    exports.ox_inventory:closeInventory()
                     exports.sleepless_lootbox:preview('supply_crate')
                 end
             },
@@ -60,6 +66,8 @@ local ox = {
         description = "Premium rewards for VIP members",
         weight = 500,
         stack = true,
+        close = false,
+        consume = 0,
         server = {
             export = "sleepless_lootbox.vip_case",
         },
@@ -67,6 +75,7 @@ local ox = {
             {
                 label = 'Preview Case',
                 action = function(slot)
+                    exports.ox_inventory:closeInventory()
                     exports.sleepless_lootbox:preview('vip_case')
                 end
             },
