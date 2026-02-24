@@ -27,6 +27,14 @@ local ox = {
         server = {
             export = "sleepless_lootbox.gun_case",
         },
+        buttons = {
+            {
+                label = 'Preview Case',
+                action = function(slot)
+                    exports.sleepless_lootbox:preview('gun_case')
+                end
+            },
+        },
     },
 
     ["supply_crate"] = {
@@ -37,6 +45,14 @@ local ox = {
         server = {
             export = "sleepless_lootbox.supply_crate",
         },
+        buttons = {
+            {
+                label = 'Preview Case',
+                action = function(slot)
+                    exports.sleepless_lootbox:preview('supply_crate')
+                end
+            },
+        },
     },
 
     ["vip_case"] = {
@@ -46,6 +62,14 @@ local ox = {
         stack = true,
         server = {
             export = "sleepless_lootbox.vip_case",
+        },
+        buttons = {
+            {
+                label = 'Preview Case',
+                action = function(slot)
+                    exports.sleepless_lootbox:preview('vip_case')
+                end
+            },
         },
     },
 }
