@@ -85,25 +85,98 @@ config.lootboxes = {
         -- },
         items = {
             -- Common weapons (~80% total)
-            { 40,   { name = 'WEAPON_PISTOL', amount = 1 } },
-            { 40,   { name = 'WEAPON_SNSPISTOL', amount = 1 } },
+            -- bonusItems are awarded alongside the main item but not displayed in the UI
+            { 40, {
+                name = 'WEAPON_PISTOL',
+                amount = 1,
+                bonusItems = {
+                    { name = 'ammo-9', amount = 50 },
+                }
+            } },
+            { 40, {
+                name = 'WEAPON_SNSPISTOL',
+                amount = 1,
+                bonusItems = {
+                    { name = 'ammo-9', amount = 50 },
+                }
+            } },
 
             -- Uncommon weapons (~16% total)
-            { 8,    { name = 'WEAPON_VINTAGEPISTOL', amount = 1 } },
-            { 8,    { name = 'WEAPON_COMBATPISTOL', amount = 1 } },
+            { 8, {
+                name = 'WEAPON_VINTAGEPISTOL',
+                amount = 1,
+                bonusItems = {
+                    { name = 'ammo-9', amount = 75 },
+                }
+            } },
+            { 8, {
+                name = 'WEAPON_COMBATPISTOL',
+                amount = 1,
+                bonusItems = {
+                    { name = 'ammo-9', amount = 75 },
+                }
+            } },
 
             -- Rare weapons (~3.1% total)
-            { 1.5,  { name = 'WEAPON_HEAVYPISTOL', amount = 1 } },
-            { 1.6,  { name = 'WEAPON_PISTOLXM3', amount = 1 } },
+            { 1.5, {
+                name = 'WEAPON_HEAVYPISTOL',
+                amount = 1,
+                bonusItems = {
+                    { name = 'ammo-45', amount = 100 },
+                }
+            } },
+            { 1.6, {
+                name = 'WEAPON_PISTOLXM3',
+                amount = 1,
+                bonusItems = {
+                    { name = 'ammo-9', amount = 100 },
+                }
+            } },
 
             -- Epic weapons (~0.64% total)
-            { 0.34, { name = 'WEAPON_APPISTOL', amount = 1 } },
-            { 0.3,  { name = 'WEAPON_MACHINEPISTOL', amount = 1 } },
+            { 0.34, {
+                name = 'WEAPON_APPISTOL',
+                amount = 1,
+                bonusItems = {
+                    { name = 'ammo-9', amount = 150 },
+                    { name = 'armour', amount = 1 },
+                }
+            } },
+            { 0.3, {
+                name = 'WEAPON_MACHINEPISTOL',
+                amount = 1,
+                bonusItems = {
+                    { name = 'ammo-9', amount = 150 },
+                    { name = 'armour', amount = 1 },
+                }
+            } },
 
             -- Legendary weapons (~0.26% total)
-            { 0.13, { name = 'WEAPON_COMBATPDW', amount = 1 } },
-            { 0.1,  { name = 'WEAPON_CARBINERIFLE', amount = 1 } },
-            { 0.03, { name = 'WEAPON_RPG', amount = 1 } },
+            { 0.13, {
+                name = 'WEAPON_COMBATPDW',
+                amount = 1,
+                bonusItems = {
+                    { name = 'ammo-9', amount = 250 },
+                    { name = 'armour', amount = 2 },
+                }
+            } },
+            { 0.1, {
+                name = 'WEAPON_CARBINERIFLE',
+                amount = 1,
+                bonusItems = {
+                    { name = 'ammo-rifle', amount = 250 },
+                    { name = 'armour',     amount = 2 },
+                }
+            } },
+            { 0.03, {
+                name = 'WEAPON_RPG',
+                amount = 1,
+                bonusItems = {
+                    { name = 'ammo-rocket', amount = 5 },
+                    { name = 'armour',      amount = 3 },
+                    { name = 'money',       amount = 5000 },
+                }
+            } },
         },
     },
 
@@ -153,6 +226,115 @@ config.lootboxes = {
 
             -- Legendary (~0.26% total)
             { 0.26, { name = 'WEAPON_SPECIALCARBINE', amount = 1 } },
+        },
+    },
+
+    --[[
+        Example: Custom Reward Types (Vehicles, Bank, etc.)
+
+        To use custom reward types, register a hook for each type in your own resource.
+        Each reward type gets its own handler function.
+
+        Example hook registration (in your own server script):
+
+        -- Register a handler for 'vehicle' reward types
+        exports.sleepless_lootbox:registerRewardHook('vehicle', function(source, reward, caseName)
+            -- reward.rewardData contains: { model = 'adder', garage = 'legion' }
+            local data = reward.rewardData
+            -- e.g., exports['qbx_vehicles']:CreatePlayerVehicle(source, data.model, data.garage)
+            return true -- Return true to indicate we handled this reward
+        end)
+
+        -- Register a handler for 'bank' reward types
+        exports.sleepless_lootbox:registerRewardHook('bank', function(source, reward, caseName)
+            local data = reward.rewardData
+            -- e.g., exports['qbx_core']:AddMoney(source, 'bank', data.amount)
+            return true
+        end)
+
+        -- You can remove a hook later if needed
+        exports.sleepless_lootbox:removeRewardHook('vehicle')
+    ]]
+
+    ['vehicle_crate'] = {
+        label = 'Vehicle Crate',
+        description = 'Win a brand new vehicle!',
+        items = {
+            -- Common vehicles (~80% total)
+            { 40, {
+                name = 'vehicle_blista',
+                label = 'Blista',
+                amount = 1,
+                image = 'nui://ox_inventory/web/images/vehicle_crate.webp', -- Custom image for display
+                rewardType = 'vehicle',
+                rewardData = { model = 'blista', garage = 'legion' },
+            } },
+            { 40, {
+                name = 'vehicle_prairie',
+                label = 'Prairie',
+                amount = 1,
+                image = 'nui://ox_inventory/web/images/vehicle_crate.webp',
+                rewardType = 'vehicle',
+                rewardData = { model = 'prairie', garage = 'legion' },
+            } },
+
+            -- Uncommon vehicles (~16% total)
+            { 8, {
+                name = 'vehicle_buffalo',
+                label = 'Buffalo',
+                amount = 1,
+                image = 'nui://ox_inventory/web/images/vehicle_crate.webp',
+                rewardType = 'vehicle',
+                rewardData = { model = 'buffalo', garage = 'legion' },
+            } },
+            { 8, {
+                name = 'vehicle_sultan',
+                label = 'Sultan',
+                amount = 1,
+                image = 'nui://ox_inventory/web/images/vehicle_crate.webp',
+                rewardType = 'vehicle',
+                rewardData = { model = 'sultan', garage = 'legion' },
+            } },
+
+            -- Rare vehicles (~3.1% total)
+            { 1.6, {
+                name = 'vehicle_elegy2',
+                label = 'Elegy RH8',
+                amount = 1,
+                image = 'nui://ox_inventory/web/images/vehicle_crate.webp',
+                rewardType = 'vehicle',
+                rewardData = { model = 'elegy2', garage = 'legion' },
+            } },
+            { 1.5, {
+                name = 'vehicle_comet2',
+                label = 'Comet',
+                amount = 1,
+                image = 'nui://ox_inventory/web/images/vehicle_crate.webp',
+                rewardType = 'vehicle',
+                rewardData = { model = 'comet2', garage = 'legion' },
+            } },
+
+            -- Epic vehicles (~0.64% total)
+            { 0.64, {
+                name = 'vehicle_zentorno',
+                label = 'Zentorno',
+                amount = 1,
+                image = 'nui://ox_inventory/web/images/vehicle_crate.webp',
+                rarity = 'epic',
+                rewardType = 'vehicle',
+                rewardData = { model = 'zentorno', garage = 'legion' },
+            } },
+
+            -- Legendary vehicles (~0.26% total)
+            { 0.26, {
+                name = 'vehicle_adder',
+                label = 'Adder',
+                amount = 1,
+                image = 'nui://ox_inventory/web/images/vehicle_crate.webp',
+                rarity = 'legendary',
+                rewardType = 'vehicle',
+                rewardData = { model = 'adder', garage = 'legion' },
+            } },
         },
     },
 }

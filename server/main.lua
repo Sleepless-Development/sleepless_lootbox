@@ -68,6 +68,14 @@ exports('getPreview', function(caseName)
     return Lootbox.getPreview(caseName)
 end)
 
+exports('registerRewardHook', function(rewardType, hook)
+    return Lootbox.registerRewardHook(rewardType, hook)
+end)
+
+exports('removeRewardHook', function(rewardType)
+    return Lootbox.removeRewardHook(rewardType)
+end)
+
 if config.debug then
     RegisterCommand('lootbox_test', function(source, args)
         local caseName = args[1] or 'gun_case'

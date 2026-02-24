@@ -14,6 +14,11 @@
 -- Loot Item Types
 -------------------------------------------------
 
+---@class BonusItem
+---@field name string Item spawn name
+---@field amount number Amount to give
+---@field metadata? table<string, any> Optional item metadata
+
 ---@class LootItemData
 ---@field name string Item spawn name
 ---@field amount number Amount to give
@@ -21,6 +26,9 @@
 ---@field rarity? Rarity Optional rarity for UI display (auto-calculated from weight if not provided)
 ---@field label? string Item label (auto-fetched from inventory if not provided)
 ---@field image? string Custom image URL (auto-fetched from inventory if not provided)
+---@field bonusItems? BonusItem[] Optional bonus items to award alongside the main item (not displayed in UI)
+---@field rewardType? string Custom reward type (e.g., 'vehicle', 'weapon', etc.). Default is 'item'. Custom types require a reward hook to handle them.
+---@field rewardData? table<string, any> Custom data for reward hooks (e.g., vehicle model, garage, etc.)
 
 ---@alias WeightedLootItem { [1]: number, [2]: LootItemData } Weight and item data tuple
 
@@ -60,6 +68,9 @@
 ---@field weight number Original weight
 ---@field chance number Percentage chance (0-100)
 ---@field metadata? table<string, any> Optional item metadata
+---@field bonusItems? BonusItem[] Optional bonus items to award alongside the main item
+---@field rewardType? string Custom reward type (e.g., 'vehicle', 'item')
+---@field rewardData? table<string, any> Custom data for reward hooks
 
 ---@class RollData
 ---@field pool RollItem[] Array of items for the roller
@@ -165,3 +176,15 @@ function exports.sleepless_lootbox:open(source, caseName, skipItemRemoval) end
 ---@param caseName string Lootbox identifier
 ---@return RollItem[]? items Array of items with chances, or nil if not found
 function exports.sleepless_lootbox:getPreview(caseName) end
+
+--- `server`
+--- Register a custom reward hook for a specific reward type (vehicles, etc.)
+--- The hook receives (source, reward, caseName) and should return true if it handled the reward
+---@param rewardType string The reward type to handle (e.g., 'vehicle')
+---@param hook fun(source: number, reward: RollItem, caseName: string): boolean?
+function exports.sleepless_lootbox:registerRewardHook(rewardType, hook) end
+
+--- `server`
+--- Remove a custom reward hook for a specific reward type
+---@param rewardType string The reward type to remove
+function exports.sleepless_lootbox:removeRewardHook(rewardType) end

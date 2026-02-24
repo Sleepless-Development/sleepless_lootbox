@@ -12,8 +12,11 @@ local LootboxManager = {}
 ---@type table<string, LootboxEntry>
 local lootboxes = {}
 
----@type table<number, RollItem>
+---@type table<number, {reward: RollItem, caseName: string}>
 local playerPendingRewards = {}
+
+---@type table<string, fun(source: number, reward: RollItem, caseName: string): boolean?>
+local rewardHooks = {}
 
 ---@param weight number
 ---@param thresholds? table<string, number> Optional per-lootbox rarity thresholds
@@ -70,6 +73,9 @@ local function createRollItem(item, weight, totalWeight, thresholds)
         weight = weight,
         chance = (weight / totalWeight) * 100,
         metadata = item.metadata,
+        bonusItems = item.bonusItems,
+        rewardType = item.rewardType,
+        rewardData = item.rewardData,
     }
 end
 
@@ -215,15 +221,8 @@ function LootboxManager.open(source, caseName, skipItemRemoval)
             return false
         end
 
-        local hasItem = Inventory.getItemCount(source, caseName) >= 1
-        if not hasItem then
+        if not Inventory.removeItem(source, caseName, 1) then
             lib.print.warn(('Player %d does not have item: %s'):format(source, caseName))
-            return false
-        end
-
-        local removed = Inventory.removeItem(source, caseName, 1)
-        if not removed then
-            lib.print.error(('Failed to remove item %s from player %d'):format(caseName, source))
             return false
         end
     end
@@ -231,7 +230,10 @@ function LootboxManager.open(source, caseName, skipItemRemoval)
     local pool, winnerIndex = generateRollPool(lootbox)
     local winner = pool[winnerIndex]
 
-    playerPendingRewards[source] = winner
+    playerPendingRewards[source] = {
+        reward = winner,
+        caseName = caseName,
+    }
 
     TriggerClientEvent('sleepless_lootbox:roll', source, {
         pool = pool,
@@ -245,35 +247,96 @@ function LootboxManager.open(source, caseName, skipItemRemoval)
 end
 
 ---@param source number
+---@param item RollItem|BonusItem
+---@param isBonus? boolean
+local function giveInventoryItem(source, item, isBonus)
+    local prefix = isBonus and 'bonus: ' or ''
+
+    if item.name == 'money' or item.name == 'cash' then
+        if Inventory.addMoney then
+            Inventory.addMoney(source, 'cash', item.amount)
+        else
+            Inventory.addItem(source, 'money', item.amount)
+        end
+        lib.print.info(('Player %d received %s$%d'):format(source, prefix, item.amount))
+        return true
+    end
+
+    local success = Inventory.addItem(source, item.name, item.amount, item.metadata)
+    if success then
+        lib.print.info(('Player %d received %s%dx %s'):format(source, prefix, item.amount, item.name))
+    else
+        lib.print.error(('Failed to give %s%dx %s to player %d'):format(prefix, item.amount, item.name, source))
+    end
+    return success
+end
+
+---@param source number
 function LootboxManager.claimReward(source)
-    local reward = playerPendingRewards[source]
-    if not reward then
+    local pending = playerPendingRewards[source]
+    if not pending then
         lib.print.error(('Player %d tried to claim reward but has no pending reward'):format(source))
         return
     end
 
+    local reward = pending.reward
+    local caseName = pending.caseName
     playerPendingRewards[source] = nil
+
+    -- Check for custom reward type and its handler
+    local rewardType = reward.rewardType
+    if rewardType and rewardType ~= 'item' then
+        local hook = rewardHooks[rewardType]
+        if hook then
+            local handled = hook(source, reward, caseName)
+            if handled then
+                lib.print.info(('Player %d reward handled by "%s" hook: %s'):format(source, rewardType, reward.name))
+                return
+            end
+            -- If hook returned false/nil, fall through to default item behavior
+            lib.print.debug(('Hook for "%s" did not handle reward, falling back to item behavior'):format(rewardType))
+        else
+            lib.print.warn(('Player %d won custom reward type "%s" but no hook is registered: %s'):format(source, rewardType, reward.name))
+            -- Fall through to default item behavior so rewards aren't lost
+        end
+    end
 
     if not Inventory then
         lib.print.error('No inventory bridge available for reward')
         return
     end
 
-    if reward.name == 'money' or reward.name == 'cash' then
-        if Inventory.addMoney then
-            Inventory.addMoney(source, 'cash', reward.amount)
-        else
-            Inventory.addItem(source, 'money', reward.amount)
-        end
-        lib.print.info(('Player %d received $%d from lootbox'):format(source, reward.amount))
-        return
-    end
+    -- Give main reward
+    giveInventoryItem(source, reward)
 
-    local success = Inventory.addItem(source, reward.name, reward.amount, reward.metadata)
-    if success then
-        lib.print.info(('Player %d received %dx %s from lootbox'):format(source, reward.amount, reward.name))
+    -- Give bonus items (not displayed in UI)
+    if reward.bonusItems then
+        for i = 1, #reward.bonusItems do
+            giveInventoryItem(source, reward.bonusItems[i], true)
+        end
+    end
+end
+
+--- Register a custom reward hook for a specific reward type (vehicles, etc.)
+--- The hook receives (source, reward, caseName) and should return true if it handled the reward
+---@param rewardType string The reward type to handle (e.g., 'vehicle')
+---@param hook fun(source: number, reward: RollItem, caseName: string): boolean?
+function LootboxManager.registerRewardHook(rewardType, hook)
+    if rewardHooks[rewardType] then
+        lib.print.warn(('Reward hook for "%s" already exists, overwriting'):format(rewardType))
+    end
+    rewardHooks[rewardType] = hook
+    lib.print.info(('Registered reward hook for type: %s'):format(rewardType))
+end
+
+--- Remove a custom reward hook for a specific reward type
+---@param rewardType string The reward type to remove
+function LootboxManager.removeRewardHook(rewardType)
+    if rewardHooks[rewardType] then
+        rewardHooks[rewardType] = nil
+        lib.print.info(('Removed reward hook for type: %s'):format(rewardType))
     else
-        lib.print.error(('Failed to give %dx %s to player %d'):format(reward.amount, reward.name, source))
+        lib.print.warn(('No reward hook found for type: %s'):format(rewardType))
     end
 end
 
