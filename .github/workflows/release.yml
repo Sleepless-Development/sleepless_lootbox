@@ -1,66 +1,83 @@
 name: Release
 
 on:
-  push:
-    tags:
-      - "v*.*.*"
+    push:
+        tags:
+            - "v*.*.*"
 
 jobs:
-  create-release:
-    name: Build and Create Tagged release
-    runs-on: ubuntu-latest
+    create-release:
+        name: Build and Create Tagged release
+        runs-on: ubuntu-latest
 
-    steps:
-      - name: Install archive tools
-        run: sudo apt install zip
+        steps:
+            - name: Install archive tools
+              run: sudo apt install zip
 
-      - name: Checkout source code
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-          ref: ${{ github.event.repository.default_branch }}
+            - name: Checkout source code
+              uses: actions/checkout@v2
+              with:
+                  fetch-depth: 0
+                  ref: ${{ github.event.repository.default_branch }}
 
-      - name: Get variables
-        id: get_vars
-        run: |
-          echo '::set-output name=SHORT_SHA::$(git rev-parse --short HEAD)'
-          echo '::set-output name=DATE::$(date +'%D')'
+            - name: Setup Bun
+              uses: oven-sh/setup-bun@v1
+              with:
+                  bun-version: latest
 
-      - name: Bump manifest version
-        run: node .github/actions/bump-manifest-version.js
-        env:
-          TGT_RELEASE_VERSION: ${{ github.ref_name }}
+            - name: Get variables
+              id: get_vars
+              run: |
+                  echo '::set-output name=SHORT_SHA::$(git rev-parse --short HEAD)'
+                  echo '::set-output name=DATE::$(date +'%D')'
 
-      - name: Push manifest change
-        uses: EndBug/add-and-commit@v8
-        with:
-          add: fxmanifest.lua
-          push: true
-          author_name: Manifest Bumper
-          author_email: 41898282+github-actions[bot]@users.noreply.github.com
-          message: "chore: bump manifest version to ${{ github.ref_name }}"
+            - name: Install dependencies
+              run: bun install --frozen-lockfile
+              working-directory: web
 
-      - name: Update tag ref
-        uses: EndBug/latest-tag@latest
-        with:
-          tag-name: ${{ github.ref_name }}
+            - name: Run build
+              run: bun run build
+              working-directory: web
+              env:
+                  CI: false
 
-      - name: Bundle files
-        run: |
-          mkdir -p ./temp/sleepless_lootbox
-          mkdir -p ./temp/sleepless_lootbox/web
-          cp ./{README.md,LICENSE,fxmanifest.lua,config.lua,types.lua} ./temp/sleepless_lootbox
-          cp -r ./{bridge,client,server,web} ./temp/sleepless_lootbox
-          cd ./temp && zip -r ../sleepless_lootbox.zip ./sleepless_lootbox
+            - name: Bump manifest version
+              run: node .github/actions/bump-manifest-version.js
+              env:
+                  TGT_RELEASE_VERSION: ${{ github.ref_name }}
 
-      - name: Create Release
-        uses: "marvinpinto/action-automatic-releases@v1.2.1"
-        id: auto_release
-        with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          title: "${{ env.RELEASE_VERSION }}"
-          prerelease: false
-          files: sleepless_lootbox.zip
+            - name: Push manifest change
+              uses: EndBug/add-and-commit@v8
+              with:
+                  add: fxmanifest.lua
+                  push: true
+                  author_name: Manifest Bumper
+                  author_email: 41898282+github-actions[bot]@users.noreply.github.com
+                  message: "chore: bump manifest version to ${{ github.ref_name }}"
 
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            - name: Update tag ref
+              uses: EndBug/latest-tag@latest
+              with:
+                  tag-name: ${{ github.ref_name }}
+
+            - name: Bundle files
+              run: |
+                  mkdir -p ./temp/sleepless_lootbox
+                  mkdir -p ./temp/sleepless_lootbox/web
+                  cp ./{README.md,LICENSE,fxmanifest.lua,config.lua,types.lua} ./temp/sleepless_lootbox
+                  cp -r ./{bridge,client,server} ./temp/sleepless_lootbox
+                  cp -r ./web/build ./temp/sleepless_lootbox/web/build
+                  cd ./temp && zip -r ../sleepless_lootbox.zip ./sleepless_lootbox
+
+            - name: Create Release
+              uses: "marvinpinto/action-automatic-releases@v1.2.1"
+              id: auto_release
+              with:
+                  repo_token: "${{ secrets.GITHUB_TOKEN }}"
+                  title: "${{ env.RELEASE_VERSION }}"
+                  prerelease: false
+                  files: sleepless_lootbox.zip
+
+              env:
+                  CI: false
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
