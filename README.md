@@ -198,7 +198,15 @@ When using **ox_core**, usable items are handled through **ox_inventory** item d
     weight = 500,
     server = {
         export = "sleepless_lootbox.gun_case"
-    }
+    },
+    buttons = {
+        {
+            label = 'Preview',
+            action = function()
+                TriggerServerEvent("sleepless_lootbox:requestPreview", "gun_case")
+            end
+        },
+    },
 },
 ```
 
