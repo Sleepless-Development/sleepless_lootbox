@@ -361,7 +361,7 @@ function LootboxManager.init()
         end
 
         LootboxManager.register(name, data)
-        count = count + 1
+        count += 1
     end
 
     lib.print.info(('Initialized %d lootboxes from config'):format(count))
