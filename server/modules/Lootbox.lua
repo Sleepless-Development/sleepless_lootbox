@@ -345,11 +345,23 @@ function LootboxManager.cancelPendingReward(source)
     playerPendingRewards[source] = nil
 end
 
+local oxInventoryStarted = GetResourceState('ox_inventory') == 'started'
+
 function LootboxManager.init()
     local count = 0
     for name, data in pairs(config.lootboxes) do
+        if oxInventoryStarted then
+            local item = exports.ox_inventory:Items(name)
+            if item then
+                data.label = item.label
+                data.description = item.description
+            else
+                lib.print.warn(('Config lootbox "%s" does not have a corresponding item in ox_inventory'):format(name))
+            end
+        end
+
         LootboxManager.register(name, data)
-        count = count + 1
+        count += 1
     end
 
     lib.print.info(('Initialized %d lootboxes from config'):format(count))
