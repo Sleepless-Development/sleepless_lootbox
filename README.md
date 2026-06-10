@@ -3,7 +3,10 @@
 ![](https://img.shields.io/github/downloads/Sleepless-Development/sleepless_lootbox/total?logo=github)
 ![](https://img.shields.io/github/downloads/Sleepless-Development/sleepless_lootbox/latest/total?logo=github)
 ![](https://img.shields.io/github/contributors/Sleepless-Development/sleepless_lootbox?logo=github)
-![](https://img.shields.io/github/v/release/Sleepless-Development/sleepless_lootbox?logo=github)
+![](https://img.shields.io/github/v/release/Sleepless-Development/sleepless_lootbox?logo=github)\
+[![](https://badges.5metrics.dev/sleepless_lootbox/serverRank.svg?style=for-the-badge)](https://5metrics.dev/resource/sleepless_lootbox)
+[![](https://badges.5metrics.dev/sleepless_lootbox/servers.svg?style=for-the-badge)](https://5metrics.dev/resource/sleepless_lootbox)
+[![](https://badges.5metrics.dev/sleepless_lootbox/players.svg?style=for-the-badge)](https://5metrics.dev/resource/sleepless_lootbox)
 
 A CS:GO-style lootbox/case opening system for FiveM with weight-based loot pools.
 
