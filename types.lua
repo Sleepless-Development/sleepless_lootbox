@@ -100,6 +100,8 @@
 ---@field getItemCount fun(source: number, item: string): number Get item count
 ---@field removeItem fun(source: number, item: string, amount: number, metadata?: table): boolean Remove item
 ---@field addItem fun(source: number, item: string, amount: number, metadata?: table): boolean Add item
+---@field addItems fun(source: number, items: {[1]: string, [2]: number, [3]?: table}[]): boolean Add multiple items, routing overflow into a single ground drop where supported (ox_inventory)
+---@field canCarry? fun(source: number, item: string, amount: number): boolean Check if the player can carry the item (ox_inventory)
 ---@field addMoney? fun(source: number, moneyType: string, amount: number): boolean Add money to player
 ---@field getItemLabel fun(item: string): string? Get item label
 ---@field getItemImage fun(item: string): string? Get item image URL
