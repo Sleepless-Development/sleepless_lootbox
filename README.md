@@ -243,7 +243,7 @@ The `useable = true` flag is what allows `QBCore.Functions.CreateUseableItem` to
 
 ## Documentation
 
-For full documentation, visit: https://sleeplessdevelopment.dev/lootbox
+For full documentation, visit: https://sleeplessdevelopment.dev/docs/lootbox
 
 ## Support
 
