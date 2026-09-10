@@ -4,6 +4,30 @@
     box-sizing: border-box;
 }
 
+@font-face {
+    font-family: DINPRO;
+    src: url("./fonts/dinpro.otf") format("opentype");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: DINPRO;
+    src: url("./fonts/dinpro_bold.otf") format("opentype");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: DINPRO;
+    src: url("./fonts/dinpro_black.otf") format("opentype");
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
 :root {
     /* Fallback rarity colors - actual colors come from server config */
     --color-common: #94999a;
@@ -12,24 +36,25 @@
     --color-epic: #d02e9b;
     --color-legendary: #ffc500;
 
-    --bg-primary: rgba(15, 15, 20, 0.95);
-    --bg-secondary: rgba(25, 25, 35, 0.9);
-    --bg-card: rgba(30, 30, 40, 0.85);
+    --primary: 49, 164, 252;
+    --bg-primary: rgba(0, 0, 0, 0.82);
+    --bg-secondary: rgba(0, 0, 0, 0.72);
+    --bg-card: rgba(0, 0, 0, 0.55);
 
     --text-primary: #ffffff;
-    --text-secondary: rgba(255, 255, 255, 0.7);
-    --text-muted: rgba(255, 255, 255, 0.5);
+    --text-secondary: rgb(168, 168, 168);
+    --text-muted: rgb(168, 168, 168);
 
-    --border-color: rgba(255, 255, 255, 0.1);
-    --border-highlight: rgba(255, 255, 255, 0.2);
+    --border-color: rgba(255, 255, 255, 0.16);
+    --border-highlight: rgba(255, 255, 255, 0.22);
 
-    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
-    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
-    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+    --shadow-sm: none;
+    --shadow-md: none;
+    --shadow-lg: none;
 
-    --transition-fast: 150ms ease;
-    --transition-normal: 250ms ease;
-    --transition-slow: 400ms ease;
+    --transition-fast: 160ms cubic-bezier(0.23, 1, 0.32, 1);
+    --transition-normal: 200ms cubic-bezier(0.23, 1, 0.32, 1);
+    --transition-slow: 240ms cubic-bezier(0.23, 1, 0.32, 1);
 
     --card-width: 120px;
     --card-gap: 12px;
@@ -37,7 +62,7 @@
 }
 
 body {
-    font-family: "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    font-family: DINPRO, "Segoe UI", sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     height: 100vh;
