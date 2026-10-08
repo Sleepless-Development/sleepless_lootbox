@@ -21,7 +21,9 @@ local function loadFramework()
 end
 
 local function loadInventory()
-    if isResourceStarted('ox_inventory') then
+    if isResourceStarted('wasabi_inventory') then
+        return require(('bridge.inventory.wasabi.%s'):format(context))
+    elseif isResourceStarted('ox_inventory') then
         return require(('bridge.inventory.ox.%s'):format(context))
     elseif isResourceStarted('qb-inventory') then
         return require(('bridge.inventory.qb.%s'):format(context))

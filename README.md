@@ -17,7 +17,7 @@ A CS:GO-style lootbox/case opening system for FiveM with weight-based loot pools
 - 👀 **Preview system** - Players can view case contents and drop chances before opening
 - 🎨 **Rarity system** - Visual rarity tiers (Common, Uncommon, Rare, Epic, Legendary)
 - 🔧 **Framework agnostic** - Supports ESX, QBCore, Qbox, and ox_core out of the box
-- 📦 **Multiple inventory support** - Works with ox_inventory, qb-inventory
+- 📦 **Multiple inventory support** - Works with ox_inventory, qb-inventory, and wasabi_inventory
 - 🎁 **Metadata support** - Items can include custom metadata
 - 📝 **Config + Runtime API** - Define lootboxes in config or register them dynamically via exports
 
